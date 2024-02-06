@@ -114,7 +114,7 @@ internal class SlotTable : CompositionData, Iterable<CompositionGroup> {
      */
     private var readers = 0
 
-    private val lock = SynchronizedObject()
+    private val lock = Any()
 
     /**
      * Tracks whether there is an active writer.

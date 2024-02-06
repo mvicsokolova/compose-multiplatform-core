@@ -23,13 +23,12 @@ import kotlin.experimental.ExperimentalNativeApi
 import kotlin.native.identityHashCode
 import kotlin.system.getTimeNanos
 import kotlin.time.ExperimentalTime
-import kotlinx.atomicfu.atomic
 import kotlinx.coroutines.yield
 
-private val threadCounter = atomic(0L)
+//private val threadCounter = atomic(0L)
 
-@kotlin.native.concurrent.ThreadLocal
-private var threadId: Long = threadCounter.addAndGet(1)
+//@kotlin.native.concurrent.ThreadLocal
+//private var threadId: Long = threadCounter.addAndGet(1)
 
 @OptIn(ExperimentalNativeApi::class)
 internal actual class WeakReference<T : Any> actual constructor(reference: T) {
@@ -87,6 +86,6 @@ internal actual fun logError(message: String, e: Throwable) {
     e.printStackTrace()
 }
 
-internal actual fun currentThreadId(): Long = threadId
+internal actual fun currentThreadId(): Long = 0
 
-internal actual fun currentThreadName(): String = "thread@$threadId"
+internal actual fun currentThreadName(): String = "thread@$0"

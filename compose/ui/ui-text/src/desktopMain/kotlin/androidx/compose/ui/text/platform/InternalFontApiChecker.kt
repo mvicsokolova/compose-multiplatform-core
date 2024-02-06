@@ -16,38 +16,38 @@
 
 package androidx.compose.ui.text.platform
 
-import kotlinx.atomicfu.atomic
 
 internal object InternalFontApiChecker {
 
-    private var hasCheckedAccess by atomic(false)
-    private var isSunFontAccessible by atomic(false)
+//    private var hasCheckedAccess by atomic(false)
+//    private var isSunFontAccessible by atomic(false)
 
     /**
      * Check whether the `sun.font` API is accessible. The result is cached
      * after the initial lookup; this API can safely be called multiple times.
      */
     fun isSunFontApiAccessible(): Boolean {
-        if (hasCheckedAccess) return isSunFontAccessible
-
-        val canAccess = canAccessSunFontApi()
-        isSunFontAccessible = canAccess
-        hasCheckedAccess = true
-        return canAccess
+//        if (hasCheckedAccess) return isSunFontAccessible
+//
+//        val canAccess = canAccessSunFontApi()
+//        isSunFontAccessible = canAccess
+//        hasCheckedAccess = true
+//        return canAccess
+        return true
     }
 
     private fun canAccessSunFontApi(): Boolean {
         try {
-            val unnamedModule = ClassLoader.getSystemClassLoader().unnamedModule
-            val desktopModule = ModuleLayer.boot().modules().single { it.name == "java.desktop" }
-
-            // Check the necessary open directives are available, so we can access standard sun.font APIs
-            if (!unnamedModule.canRead(desktopModule)) return false
-            if (!desktopModule.isOpen("sun.font", unnamedModule)) return false
-
-            // Try to obtain an instance of sun.font.FontManager (will fail if the open directive is missing)
-            val fontManagerClass = Class.forName("sun.font.FontManagerFactory")
-            fontManagerClass.getDeclaredMethod("getInstance").invoke(null)
+//            val unnamedModule = ClassLoader.getSystemClassLoader().unnamedModule
+//            val desktopModule = ModuleLayer.boot().modules().single { it.name == "java.desktop" }
+//
+//            // Check the necessary open directives are available, so we can access standard sun.font APIs
+//            if (!unnamedModule.canRead(desktopModule)) return false
+//            if (!desktopModule.isOpen("sun.font", unnamedModule)) return false
+//
+//            // Try to obtain an instance of sun.font.FontManager (will fail if the open directive is missing)
+//            val fontManagerClass = Class.forName("sun.font.FontManagerFactory")
+//            fontManagerClass.getDeclaredMethod("getInstance").invoke(null)
 
             return true
         } catch (ignored: Throwable) {

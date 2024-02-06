@@ -20,7 +20,7 @@ import androidx.compose.runtime.snapshots.Snapshot
 import androidx.compose.ui.createSynchronizedObject
 import androidx.compose.ui.getCurrentThreadId
 import androidx.compose.ui.synchronized
-import kotlinx.atomicfu.atomic
+//import kotlinx.atomicfu.atomic
 
 /**
  * SnapshotCommandList is a class that manages commands and invalidations for snapshot-based recomposition.
@@ -40,7 +40,7 @@ internal class SnapshotInvalidationTracker(
      *
      * Note that it's not valid to have more than one thread calling it at the same time.
      */
-    private var renderingThreadId: Long? by atomic(null)
+    private var renderingThreadId: Long? = null
 
     val hasInvalidations: Boolean
         get() = needLayout || needDraw || snapshotChanges.hasCommands
@@ -69,10 +69,11 @@ internal class SnapshotInvalidationTracker(
      * @return the observer for monitoring snapshot changes
      */
     fun snapshotObserver() = OwnerSnapshotObserver { command ->
-        if (renderingThreadId == getCurrentThreadId())
-            command()
-        else
-            snapshotChanges.add(command)
+        command()
+//        if (renderingThreadId == getCurrentThreadId())
+//            command()
+//        else
+//            snapshotChanges.add(command)
     }
 
     /**

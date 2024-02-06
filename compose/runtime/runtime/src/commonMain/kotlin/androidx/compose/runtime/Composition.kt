@@ -450,7 +450,7 @@ internal class CompositionImpl(
      * any set contents will be sent to [recordModificationsOf] after applying changes
      * before releasing [lock]
      */
-    private val pendingModifications = AtomicReference<Any?>(null)
+    //private val pendingModifications = AtomicReference<Any?>(null)
 
     // Held when making changes to self or composer
     private val lock = createSynchronizedObject()
@@ -669,42 +669,42 @@ internal class CompositionImpl(
     private fun drainPendingModificationsForCompositionLocked() {
         // Recording modifications may race for lock. If there are pending modifications
         // and we won the lock race, drain them before composing.
-        when (val toRecord = pendingModifications.getAndSet(PendingApplyNoModifications)) {
-            null -> {
-                // Do nothing, just start composing.
-            }
-            PendingApplyNoModifications -> {
-                composeRuntimeError("pending composition has not been applied")
-            }
-            is Set<*> -> {
-                addPendingInvalidationsLocked(toRecord as Set<Any>, forgetConditionalScopes = true)
-            }
-            is Array<*> -> for (changed in toRecord as Array<Set<Any>>) {
-                addPendingInvalidationsLocked(changed, forgetConditionalScopes = true)
-            }
-            else -> composeRuntimeError("corrupt pendingModifications drain: $pendingModifications")
-        }
+//        when (val toRecord = pendingModifications.getAndSet(PendingApplyNoModifications)) {
+//            null -> {
+//                // Do nothing, just start composing.
+//            }
+//            PendingApplyNoModifications -> {
+//                composeRuntimeError("pending composition has not been applied")
+//            }
+//            is Set<*> -> {
+//                addPendingInvalidationsLocked(toRecord as Set<Any>, forgetConditionalScopes = true)
+//            }
+//            is Array<*> -> for (changed in toRecord as Array<Set<Any>>) {
+//                addPendingInvalidationsLocked(changed, forgetConditionalScopes = true)
+//            }
+//            else -> composeRuntimeError("corrupt pendingModifications drain: $pendingModifications")
+//        }
     }
 
     @Suppress("UNCHECKED_CAST")
     private fun drainPendingModificationsLocked() {
-        when (val toRecord = pendingModifications.getAndSet(null)) {
-            PendingApplyNoModifications -> {
-                // No work to do
-            }
-            is Set<*> -> {
-                addPendingInvalidationsLocked(toRecord as Set<Any>, forgetConditionalScopes = false)
-            }
-            is Array<*> -> for (changed in toRecord as Array<Set<Any>>) {
-                addPendingInvalidationsLocked(changed, forgetConditionalScopes = false)
-            }
-            null -> composeRuntimeError(
-                "calling recordModificationsOf and applyChanges concurrently is not supported"
-            )
-            else -> composeRuntimeError(
-                "corrupt pendingModifications drain: $pendingModifications"
-            )
-        }
+//        when (val toRecord = pendingModifications.getAndSet(null)) {
+//            PendingApplyNoModifications -> {
+//                // No work to do
+//            }
+//            is Set<*> -> {
+//                addPendingInvalidationsLocked(toRecord as Set<Any>, forgetConditionalScopes = false)
+//            }
+//            is Array<*> -> for (changed in toRecord as Array<Set<Any>>) {
+//                addPendingInvalidationsLocked(changed, forgetConditionalScopes = false)
+//            }
+//            null -> composeRuntimeError(
+//                "calling recordModificationsOf and applyChanges concurrently is not supported"
+//            )
+//            else -> composeRuntimeError(
+//                "corrupt pendingModifications drain: $pendingModifications"
+//            )
+//        }
     }
 
     override fun composeContent(content: @Composable () -> Unit) {
@@ -786,21 +786,22 @@ internal class CompositionImpl(
     @Suppress("UNCHECKED_CAST")
     override fun recordModificationsOf(values: Set<Any>) {
         while (true) {
-            val old = pendingModifications.get()
-            val new: Any = when (old) {
-                null, PendingApplyNoModifications -> values
-                is Set<*> -> arrayOf(old, values)
-                is Array<*> -> (old as Array<Set<Any>>) + values
-                else -> error("corrupt pendingModifications: $pendingModifications")
-            }
-            if (pendingModifications.compareAndSet(old, new)) {
-                if (old == null) {
-                    synchronized(lock) {
-                        drainPendingModificationsLocked()
-                    }
-                }
-                break
-            }
+            break
+//            val old = pendingModifications.get()
+//            val new: Any = when (old) {
+//                null, PendingApplyNoModifications -> values
+//                is Set<*> -> arrayOf(old, values)
+//                is Array<*> -> (old as Array<Set<Any>>) + values
+//                else -> error("corrupt pendingModifications: $pendingModifications")
+//            }
+//            if (pendingModifications.compareAndSet(old, new)) {
+//                if (old == null) {
+//                    synchronized(lock) {
+//                        drainPendingModificationsLocked()
+//                    }
+//                }
+//                break
+//            }
         }
     }
 
@@ -1050,7 +1051,7 @@ internal class CompositionImpl(
         }
 
     private fun abandonChanges() {
-        pendingModifications.set(null)
+        //pendingModifications.set(null)
         changes.clear()
         lateChanges.clear()
         abandonSet.clear()

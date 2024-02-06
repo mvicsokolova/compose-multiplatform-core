@@ -61,7 +61,6 @@ import javax.swing.LayoutFocusTraversalPolicy
 import javax.swing.SwingUtilities
 import kotlin.math.ceil
 import kotlin.math.floor
-import kotlinx.atomicfu.atomic
 
 val NoOpUpdate: Component.() -> Unit = {}
 
@@ -262,20 +261,20 @@ private class Updater<T : Component>(
     update: (T) -> Unit,
 ) {
     private var isDisposed = false
-    private val isUpdateScheduled = atomic(false)
+    //private val isUpdateScheduled = atomic(false)
     private val snapshotObserver = SnapshotStateObserver { command ->
         command()
     }
 
     private val scheduleUpdate = { _: T ->
-        if (!isUpdateScheduled.getAndSet(true)) {
-            SwingUtilities.invokeLater {
-                isUpdateScheduled.value = false
-                if (!isDisposed) {
-                    performUpdate()
-                }
-            }
-        }
+//        if (!isUpdateScheduled.getAndSet(true)) {
+//            SwingUtilities.invokeLater {
+//                isUpdateScheduled.value = false
+//                if (!isDisposed) {
+//                    performUpdate()
+//                }
+//            }
+//        }
     }
 
     var update: (T) -> Unit = update

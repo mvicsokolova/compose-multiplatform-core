@@ -41,7 +41,6 @@ import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntRect
 import androidx.compose.ui.unit.round
-import kotlinx.atomicfu.atomic
 import kotlinx.cinterop.CValue
 import platform.CoreGraphics.CGRect
 import platform.CoreGraphics.CGRectMake
@@ -346,22 +345,22 @@ private class Updater<T : Any>(
     private val deferAction: (() -> Unit) -> Unit,
 ) {
     private var isDisposed = false
-    private val isUpdateScheduled = atomic(false)
+    //private val isUpdateScheduled = atomic(false)
     private val snapshotObserver = SnapshotStateObserver { command ->
         command()
     }
 
     private val scheduleUpdate = { _: T ->
-        if (!isUpdateScheduled.getAndSet(true)) {
-            deferAction {
-                check(NSThread.isMainThread)
-
-                isUpdateScheduled.value = false
-                if (!isDisposed) {
-                    performUpdate()
-                }
-            }
-        }
+//        if (!isUpdateScheduled.getAndSet(true)) {
+//            deferAction {
+//                check(NSThread.isMainThread)
+//
+//                isUpdateScheduled.value = false
+//                if (!isDisposed) {
+//                    performUpdate()
+//                }
+//            }
+//        }
     }
 
     var update: (T) -> Unit = update

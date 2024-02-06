@@ -22,12 +22,12 @@ If you need to make changes to the content, then find duplicates on this comment
 
 package androidx.compose.ui.text
 
-internal class SynchronizedObject : kotlinx.atomicfu.locks.SynchronizedObject()
+internal class SynchronizedObject : Any()
 
 @Suppress("CONFLICTING_OVERLOADS")
-internal fun createSynchronizedObject() = SynchronizedObject()
+internal fun createSynchronizedObject() = Any()
 
 @Suppress("CONFLICTING_OVERLOADS")
 @PublishedApi
-internal inline fun <R> synchronized(lock: SynchronizedObject, block: () -> R): R =
-    kotlinx.atomicfu.locks.synchronized(lock, block)
+internal inline fun <R> synchronized(lock: Any, block: () -> R): R =
+    block()

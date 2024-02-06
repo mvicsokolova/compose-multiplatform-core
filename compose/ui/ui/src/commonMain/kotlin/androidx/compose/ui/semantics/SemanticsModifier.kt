@@ -22,11 +22,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.internal.JvmDefaultWithCompatibility
 import androidx.compose.ui.node.ModifierNodeElement
 import androidx.compose.ui.node.SemanticsModifierNode
-import androidx.compose.ui.platform.AtomicInt
 import androidx.compose.ui.platform.InspectorInfo
 
-private var lastIdentifier = AtomicInt(0)
-internal fun generateSemanticsId() = lastIdentifier.addAndGet(1)
+private val lastIdentifier = 0
+internal fun generateSemanticsId() = lastIdentifier + 1
 
 /**
  * A [Modifier.Element] that adds semantics key/value for use in testing,

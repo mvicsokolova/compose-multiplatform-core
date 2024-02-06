@@ -33,18 +33,20 @@ import kotlinx.coroutines.job
  * new session's coroutine starts.
  */
 @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
-@InternalComposeUiApi
-@JvmInline
-value class SessionMutex<T> private constructor(
-    private val currentSessionHolder: AtomicReference<Session<T>?>
+@InternalComposeUiApi 
+// TODO: value class!!! 
+class SessionMutex<T> private constructor(
+    private val currentSessionInit: Session<T>?
 ) {
-    constructor() : this(AtomicReference(null))
+    private val currentSessionHolder = currentSessionInit
+    
+    constructor() : this(null)
 
     /**
      * Returns the current session object.
      */
     val currentSession: T?
-        get() = currentSessionHolder.get()?.value
+        get() = null
 
     /**
      * Cancels any existing session and then calls [session].
@@ -64,14 +66,14 @@ value class SessionMutex<T> private constructor(
             job = coroutineContext.job,
             value = sessionInitializer(this)
         )
-        currentSessionHolder.getAndSet(newSession)?.job?.cancelAndJoin()
+        newSession.job.cancelAndJoin()
         try {
             return@coroutineScope session(newSession.value)
         } finally {
             // If this session is being interrupted by another session, the holder will already have
             // been changed, so this will fail. If the session is getting cancelled externally or
             // from within, this will ensure we release the session while no session is active.
-            currentSessionHolder.compareAndSet(newSession, null)
+            //currentSessionHolder.compareAndSet(newSession, null)
         }
     }
 

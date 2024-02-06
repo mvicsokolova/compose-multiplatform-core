@@ -282,7 +282,7 @@ private class DeprecatedBridgeFontResourceLoader private constructor(
         // call getFontResourceLoader, and evaluate if FontFamily.Resolver is being correctly cached
         // (via e.g. remember)
         var cache = mutableMapOf<FontFamily.Resolver, Font.ResourceLoader>()
-        val lock: SynchronizedObject = createSynchronizedObject()
+        val lock: Any = createSynchronizedObject()
         fun from(fontFamilyResolver: FontFamily.Resolver): Font.ResourceLoader {
             synchronized(lock) {
                 // the same resolver to return the same ResourceLoader

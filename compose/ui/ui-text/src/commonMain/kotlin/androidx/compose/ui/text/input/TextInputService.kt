@@ -18,7 +18,6 @@ package androidx.compose.ui.text.input
 
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Matrix
-import androidx.compose.ui.text.AtomicReference
 import androidx.compose.ui.text.InternalTextApi
 import androidx.compose.ui.text.TextLayoutResult
 
@@ -32,11 +31,11 @@ import androidx.compose.ui.text.TextLayoutResult
  */
 // Open for testing purposes.
 open class TextInputService(private val platformTextInputService: PlatformTextInputService) {
-    private val _currentInputSession: AtomicReference<TextInputSession?> =
-        AtomicReference(null)
+//    private val _currentInputSession: AtomicReference<TextInputSession?> =
+//        AtomicReference(null)
 
     internal val currentInputSession: TextInputSession?
-        get() = _currentInputSession.get()
+        get() = null
 
     /**
      * Start text input session for given client.
@@ -63,7 +62,7 @@ open class TextInputService(private val platformTextInputService: PlatformTextIn
             onImeActionPerformed
         )
         val nextSession = TextInputSession(this, platformTextInputService)
-        _currentInputSession.set(nextSession)
+        //_currentInputSession.set(nextSession)
         return nextSession
     }
 
@@ -84,9 +83,9 @@ open class TextInputService(private val platformTextInputService: PlatformTextIn
      * @param session the session returned by [startInput] call.
      */
     open fun stopInput(session: TextInputSession) {
-        if (_currentInputSession.compareAndSet(session, null)) {
-            platformTextInputService.stopInput()
-        }
+//        if (_currentInputSession.compareAndSet(session, null)) {
+//            platformTextInputService.stopInput()
+//        }
     }
 
     @InternalTextApi

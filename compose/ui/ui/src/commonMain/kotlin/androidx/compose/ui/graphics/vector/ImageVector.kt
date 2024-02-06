@@ -412,7 +412,7 @@ class ImageVector internal constructor(
     companion object {
         private var imageVectorCount = 0
 
-        private val lock = SynchronizedObject()
+        private val lock = Any()
 
         internal fun generateImageVectorId(): Int {
             synchronized(lock) {

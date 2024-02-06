@@ -68,7 +68,7 @@ internal interface RecomposeScopeOwner {
     fun recordReadOf(value: Any)
 }
 
-private val callbackLock = SynchronizedObject()
+private val callbackLock = Any()
 
 /**
  * A RecomposeScope is created for a region of the composition that can be recomposed independently

@@ -26,18 +26,19 @@ import androidx.compose.runtime.internal.emptyThreadMap
  * could get pinned by the thread local causing a leak.
  */
 internal class SnapshotThreadLocal<T> {
-    private val map = AtomicReference<ThreadMap>(emptyThreadMap)
-    private val writeMutex = SynchronizedObject()
+    //private val map = AtomicReference<ThreadMap>(emptyThreadMap)
+    private val writeMutex = Any()
 
     @Suppress("UNCHECKED_CAST")
-    fun get(): T? = map.get().get(currentThreadId()) as T?
+    fun get(): T? = null
 
     fun set(value: T?) {
         val key = currentThreadId()
         synchronized(writeMutex) {
-            val current = map.get()
-            if (current.trySet(key, value)) return
-            map.set(current.newWith(key, value))
+            //val current = map.get()
+//            if (current.trySet(key, value)) return
+//            map.set(current.newWith(key, value))
+            return
         }
     }
 }

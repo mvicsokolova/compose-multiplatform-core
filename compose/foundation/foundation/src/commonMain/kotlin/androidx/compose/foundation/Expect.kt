@@ -20,18 +20,18 @@ package androidx.compose.foundation
 
 import kotlinx.coroutines.CancellationException
 
-internal expect class AtomicReference<V>(value: V) {
-    fun get(): V
-    fun set(value: V)
-    fun getAndSet(value: V): V
-    fun compareAndSet(expect: V, newValue: V): Boolean
-}
-
-internal expect class AtomicLong(value: Long) {
-    fun get(): Long
-    fun set(value: Long)
-    fun getAndIncrement(): Long
-}
+//internal expect class AtomicReference<V>(value: V) {
+//    fun get(): V
+//    fun set(value: V)
+//    fun getAndSet(value: V): V
+//    fun compareAndSet(expect: V, newValue: V): Boolean
+//}
+//
+//internal expect class AtomicLong(value: Long) {
+//    fun get(): Long
+//    fun set(value: Long)
+//    fun getAndIncrement(): Long
+//}
 
 /**
  * Represents a platform-optimized cancellation exception.

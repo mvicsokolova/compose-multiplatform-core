@@ -16,25 +16,37 @@
 
 package androidx.compose.runtime
 
-import kotlinx.atomicfu.atomic
-
-
-internal actual class AtomicReference<V> actual constructor(value: V) {
-    private val delegate = atomic(value)
-    actual fun get() = delegate.value
+internal actual class AtomicReference<V> actual constructor(private var value: V) {
+    //private val delegate = atomic(value)
+    actual fun get() = value
     actual fun set(value: V) {
-        delegate.value = value
+        this.value = value
     }
-    actual fun getAndSet(value: V) = delegate.getAndSet(value)
-    actual fun compareAndSet(expect: V, newValue: V) = delegate.compareAndSet(expect, newValue)
+    actual fun getAndSet(value: V) = value
+    actual fun compareAndSet(expect: V, newValue: V): Boolean {
+        if (value == expect) {
+            value = newValue;
+            return true
+        } else
+            return false
+    }
 }
 
-internal actual class AtomicInt actual constructor(value: Int) {
-    private val delegate = atomic(value)
-    actual fun get(): Int = delegate.value
+internal actual class AtomicInt actual constructor(private var value: Int) {
+    actual fun get() = value
     actual fun set(value: Int) {
-        delegate.value = value
+        this.value = value
     }
-    actual fun add(amount: Int): Int = delegate.addAndGet(amount)
-    actual fun compareAndSet(expect: Int, newValue: Int) = delegate.compareAndSet(expect, newValue)
+    actual fun getAndSet(value: Int) = value
+    actual fun compareAndSet(expect: Int, newValue: Int): Boolean {
+        if (value == expect) {
+            value = newValue;
+            return true
+        } else
+            return false
+    }
+
+    actual fun add(amount: Int): Int {
+        return value + amount
+    }
 }

@@ -17,7 +17,6 @@
 package androidx.compose.ui.platform
 
 import androidx.compose.runtime.snapshots.Snapshot
-import kotlinx.atomicfu.atomic
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.Channel
@@ -34,24 +33,24 @@ import kotlinx.coroutines.launch
  * [ensureStarted] during setup to initialize periodic global snapshot notifications.
  */
 internal object GlobalSnapshotManager {
-    private val started = atomic(0)
-    private val sent = atomic(0)
+//    private val started = atomic(0)
+//    private val sent = atomic(0)
 
     fun ensureStarted() {
-        if (started.compareAndSet(0, 1)) {
-            val channel = Channel<Unit>(1)
-            CoroutineScope(GlobalSnapshotManagerDispatcher).launch {
-                channel.consumeEach {
-                    sent.compareAndSet(1, 0)
-                    Snapshot.sendApplyNotifications()
-                }
-            }
-            Snapshot.registerGlobalWriteObserver {
-                if (sent.compareAndSet(0, 1)) {
-                    channel.trySend(Unit)
-                }
-            }
-        }
+//        if (started.compareAndSet(0, 1)) {
+//            val channel = Channel<Unit>(1)
+//            CoroutineScope(GlobalSnapshotManagerDispatcher).launch {
+//                channel.consumeEach {
+//                    sent.compareAndSet(1, 0)
+//                    Snapshot.sendApplyNotifications()
+//                }
+//            }
+//            Snapshot.registerGlobalWriteObserver {
+//                if (sent.compareAndSet(0, 1)) {
+//                    channel.trySend(Unit)
+//                }
+//            }
+//        }
     }
 }
 

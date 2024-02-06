@@ -16,7 +16,6 @@
 
 package androidx.compose.ui.uikit
 
-import kotlinx.atomicfu.atomic
 import platform.Foundation.NSBundle
 import platform.Foundation.NSNumber
 import platform.darwin.DISPATCH_QUEUE_PRIORITY_LOW
@@ -24,22 +23,23 @@ import platform.darwin.dispatch_async
 import platform.darwin.dispatch_get_global_queue
 
 internal object PlistSanityCheck {
-    private val isPerformed = atomic(false)
+    //private val isPerformed = atomic(false)
 
     fun performIfNeeded() {
-        if (isPerformed.compareAndSet(expect = false, update = true)) {
-            dispatch_async(dispatch_get_global_queue(
-                DISPATCH_QUEUE_PRIORITY_LOW.toLong(),
-                0u
-            )) {
-                val entry = NSBundle
-                    .mainBundle
-                    .objectForInfoDictionaryKey("CADisableMinimumFrameDurationOnPhone") as? NSNumber
-
-                if (entry?.boolValue != true) {
-                    println("WARNING: `Info.plist` doesn't have a valid `CADisableMinimumFrameDurationOnPhone` entry. Framerate will be restricted to 60hz on iPhones. To support high frequency rendering on iPhones, add `<key>CADisableMinimumFrameDurationOnPhone</key><true/>` entry to `Info.plist`.")
-                }
-            }
-        }
+        println("WARNING")
+//        if (isPerformed.compareAndSet(expect = false, update = true)) {
+//            dispatch_async(dispatch_get_global_queue(
+//                DISPATCH_QUEUE_PRIORITY_LOW.toLong(),
+//                0u
+//            )) {
+//                val entry = NSBundle
+//                    .mainBundle
+//                    .objectForInfoDictionaryKey("CADisableMinimumFrameDurationOnPhone") as? NSNumber
+//
+//                if (entry?.boolValue != true) {
+//                    println("WARNING: `Info.plist` doesn't have a valid `CADisableMinimumFrameDurationOnPhone` entry. Framerate will be restricted to 60hz on iPhones. To support high frequency rendering on iPhones, add `<key>CADisableMinimumFrameDurationOnPhone</key><true/>` entry to `Info.plist`.")
+//                }
+//            }
+//        }
     }
 }

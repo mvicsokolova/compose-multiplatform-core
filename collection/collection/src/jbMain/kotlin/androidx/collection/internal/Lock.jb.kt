@@ -16,11 +16,10 @@
 
 package androidx.collection.internal
 
-import kotlinx.atomicfu.locks.SynchronizedObject
 import kotlinx.atomicfu.locks.synchronized
 
 internal actual class Lock {
-    private val synchronizedObject = SynchronizedObject()
+    private val synchronizedObject = Any()
 
     actual inline fun <T> synchronizedImpl(block: () -> T): T =
         synchronized(synchronizedObject, block)

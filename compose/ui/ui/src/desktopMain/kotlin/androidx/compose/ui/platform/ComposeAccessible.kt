@@ -65,7 +65,6 @@ import javax.swing.text.AttributeSet
 import kotlin.math.roundToInt
 import org.jetbrains.skia.BreakIterator
 import javax.swing.text.SimpleAttributeSet
-import kotlinx.atomicfu.atomic
 import org.jetbrains.skiko.nativeInitializeAccessible
 
 private fun <T> SemanticsConfiguration.getFirstOrNull(key: SemanticsPropertyKey<List<T>>): T? {
@@ -87,7 +86,7 @@ internal class ComposeAccessible(
     // The property change listener is what allows us to update CAccessible when some value changes.
     java.awt.Component()
 {
-    private val isNativelyInitialized = atomic(false)
+    //private val isNativelyInitialized = atomic(false)
 
     val composeAccessibleContext: ComposeAccessibleComponent by lazy { ComposeAccessibleComponent() }
 
@@ -101,9 +100,9 @@ internal class ComposeAccessible(
         }
 
         // see doc for [nativeInitializeAccessible] for details, why this initialization is needed
-        if (isNativelyInitialized.compareAndSet(false, true)) {
-            nativeInitializeAccessible(this)
-        }
+//        if (isNativelyInitialized.compareAndSet(false, true)) {
+//            nativeInitializeAccessible(this)
+//        }
         return composeAccessibleContext
     }
 

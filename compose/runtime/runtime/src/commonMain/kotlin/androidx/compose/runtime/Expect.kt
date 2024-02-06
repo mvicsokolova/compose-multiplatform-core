@@ -50,6 +50,7 @@ internal expect class AtomicInt(value: Int) {
     fun set(value: Int)
     fun add(amount: Int): Int
     fun compareAndSet(expect: Int, newValue: Int): Boolean
+    fun getAndSet(value: Int): Int
 }
 
 internal fun AtomicInt.postIncrement(): Int = add(1) - 1

@@ -27,12 +27,12 @@ import kotlinx.coroutines.sync.withLock
 /*** This is an internal copy of androidx.compose.foundation.MutatorMutex with an additional
  * tryMutate method. Do not modify, except for tryMutate. ***/
 
-internal expect class AtomicReference<V>(value: V) {
-    fun get(): V
-    fun set(value: V)
-    fun getAndSet(value: V): V
-    fun compareAndSet(expect: V, newValue: V): Boolean
-}
+//internal expect class AtomicReference<V>(value: V) {
+//    fun get(): V
+//    fun set(value: V)
+//    fun getAndSet(value: V): V
+//    fun compareAndSet(expect: V, newValue: V): Boolean
+//}
 
 /**
  * Mutual exclusion for UI state mutation over time.
@@ -56,18 +56,19 @@ internal class InternalMutatorMutex {
         fun cancel() = job.cancel()
     }
 
-    private val currentMutator = AtomicReference<Mutator?>(null)
+    //private val currentMutator = atomic<Mutator?>(null)
     private val mutex = Mutex()
 
     private fun tryMutateOrCancel(mutator: Mutator) {
         while (true) {
-            val oldMutator = currentMutator.get()
-            if (oldMutator == null || mutator.canInterrupt(oldMutator)) {
-                if (currentMutator.compareAndSet(oldMutator, mutator)) {
-                    oldMutator?.cancel()
-                    break
-                }
-            } else throw CancellationException("Current mutation had a higher priority")
+            //val oldMutator = currentMutator.value
+//            if (oldMutator == null || mutator.canInterrupt(oldMutator)) {
+//                if (currentMutator.compareAndSet(oldMutator, mutator)) {
+//                    oldMutator?.cancel()
+//                    break
+//                }
+//            } else 
+                throw CancellationException("Current mutation had a higher priority")
         }
     }
 
@@ -98,7 +99,7 @@ internal class InternalMutatorMutex {
             try {
                 block()
             } finally {
-                currentMutator.compareAndSet(mutator, null)
+                //currentMutator.compareAndSet(mutator, null)
             }
         }
     }
@@ -137,7 +138,7 @@ internal class InternalMutatorMutex {
             try {
                 receiver.block()
             } finally {
-                currentMutator.compareAndSet(mutator, null)
+                //currentMutator.compareAndSet(mutator, null)
             }
         }
     }

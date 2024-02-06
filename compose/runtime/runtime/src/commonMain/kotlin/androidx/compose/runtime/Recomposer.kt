@@ -701,7 +701,7 @@ class Recomposer(
         failedInitialComposition: ControlledComposition? = null,
         recoverable: Boolean = false,
     ) {
-        if (_hotReloadEnabled.get() && e !is ComposeRuntimeError) {
+        if (e !is ComposeRuntimeError) {
             synchronized(stateLock) {
                 logError("Error was captured in composition while live edit was enabled.", e)
 
@@ -1403,7 +1403,7 @@ class Recomposer(
 
         private val _runningRecomposers = MutableStateFlow(persistentSetOf<RecomposerInfoImpl>())
 
-        private val _hotReloadEnabled = AtomicReference(false)
+        //private val _hotReloadEnabled = AtomicReference(false)
 
         /**
          * An observable [Set] of [RecomposerInfo]s for currently
@@ -1414,7 +1414,7 @@ class Recomposer(
             get() = _runningRecomposers
 
         internal fun setHotReloadEnabled(value: Boolean) {
-            _hotReloadEnabled.set(value)
+            //_hotReloadEnabled.set(value)
         }
 
         private fun addRunning(info: RecomposerInfoImpl) {
@@ -1436,14 +1436,14 @@ class Recomposer(
         internal fun saveStateAndDisposeForHotReload(): Any {
             // NOTE: when we move composition/recomposition onto multiple threads, we will want
             // to ensure that we pause recompositions before this call.
-            _hotReloadEnabled.set(true)
+            //_hotReloadEnabled.set(true)
             return _runningRecomposers.value.flatMap { it.saveStateAndDisposeForHotReload() }
         }
 
         internal fun loadStateAndComposeForHotReload(token: Any) {
             // NOTE: when we move composition/recomposition onto multiple threads, we will want
             // to ensure that we pause recompositions before this call.
-            _hotReloadEnabled.set(true)
+            //_hotReloadEnabled.set(true)
 
             _runningRecomposers.value.forEach {
                 it.resetErrorState()
@@ -1460,7 +1460,7 @@ class Recomposer(
         }
 
         internal fun invalidateGroupsWithKey(key: Int) {
-            _hotReloadEnabled.set(true)
+            //_hotReloadEnabled.set(true)
             _runningRecomposers.value.forEach {
                 if (it.currentError?.recoverable == false) {
                     return@forEach
@@ -1506,7 +1506,7 @@ private class ProduceFrameSignal {
      * [FramePending] state which must be acknowledged by a call to [takeFrameRequestLocked]
      * once all data that will be used to produce the frame has been claimed.
      */
-    suspend fun awaitFrameRequest(lock: SynchronizedObject) {
+    suspend fun awaitFrameRequest(lock: Any) {
         synchronized(lock) {
             if (pendingFrameContinuation === ProduceAnotherFrame) {
                 pendingFrameContinuation = FramePending

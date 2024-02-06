@@ -84,18 +84,19 @@ class MutatorMutex {
         fun cancel() = job.cancel(MutationInterruptedException())
     }
 
-    private val currentMutator = AtomicReference<Mutator?>(null)
+    //private val currentMutator = atomic<Mutator?>(null)
     private val mutex = Mutex()
 
     private fun tryMutateOrCancel(mutator: Mutator) {
         while (true) {
-            val oldMutator = currentMutator.get()
-            if (oldMutator == null || mutator.canInterrupt(oldMutator)) {
-                if (currentMutator.compareAndSet(oldMutator, mutator)) {
-                    oldMutator?.cancel()
-                    break
-                }
-            } else throw CancellationException("Current mutation had a higher priority")
+            throw CancellationException("Current mutation had a higher priority")
+//            val oldMutator = currentMutator.value
+//            if (oldMutator == null || mutator.canInterrupt(oldMutator)) {
+//                if (currentMutator.compareAndSet(oldMutator, mutator)) {
+//                    oldMutator?.cancel()
+//                    break
+//                }
+//            } else throw CancellationException("Current mutation had a higher priority")
         }
     }
 
@@ -126,7 +127,7 @@ class MutatorMutex {
             try {
                 block()
             } finally {
-                currentMutator.compareAndSet(mutator, null)
+                //currentMutator.compareAndSet(mutator, null)
             }
         }
     }
@@ -167,7 +168,7 @@ class MutatorMutex {
             try {
                 receiver.block()
             } finally {
-                currentMutator.compareAndSet(mutator, null)
+                //currentMutator.compareAndSet(mutator, null)
             }
         }
     }

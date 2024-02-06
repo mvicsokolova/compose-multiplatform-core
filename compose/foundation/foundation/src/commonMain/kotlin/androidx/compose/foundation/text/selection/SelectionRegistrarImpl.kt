@@ -16,7 +16,6 @@
 
 package androidx.compose.foundation.text.selection
 
-import androidx.compose.foundation.AtomicLong
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.Saver
@@ -29,7 +28,8 @@ internal class SelectionRegistrarImpl private constructor(
 ) : SelectionRegistrar {
     companion object {
         val Saver = Saver<SelectionRegistrarImpl, Long>(
-            save = { it.incrementId.get() },
+            //save = { it.incrementId.value },
+            save = { 0L },
             restore = { SelectionRegistrarImpl(it) }
         )
     }
@@ -66,7 +66,7 @@ internal class SelectionRegistrarImpl private constructor(
      * denote an invalid id.
      * @see SelectionRegistrar.InvalidSelectableId
      */
-    private var incrementId = AtomicLong(initialIncrementId)
+    //private val incrementId = atomic(initialIncrementId)
 
     /**
      * The callback to be invoked when the position change was triggered.
@@ -132,11 +132,12 @@ internal class SelectionRegistrarImpl private constructor(
     }
 
     override fun nextSelectableId(): Long {
-        var id = incrementId.getAndIncrement()
-        while (id == SelectionRegistrar.InvalidSelectableId) {
-            id = incrementId.getAndIncrement()
-        }
-        return id
+        //var id = incrementId.getAndIncrement()
+//        while (id == SelectionRegistrar.InvalidSelectableId) {
+//            id = incrementId.getAndIncrement()
+//        }
+//        return id
+        return 1
     }
 
     /**

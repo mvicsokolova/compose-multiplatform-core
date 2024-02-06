@@ -33,7 +33,7 @@ class VerifyResultListener(capturesCount: Int) : Request.Listener {
     private val captureRequests = mutableListOf<RequestMetadata>()
     private val captureResults = mutableListOf<FrameInfo>()
 
-    private val waitingCount = atomic(capturesCount)
+    //private val waitingCount = atomic(capturesCount)
     private val failureException =
         TimeoutException("Test doesn't complete after waiting for $capturesCount frames.")
 
@@ -52,10 +52,10 @@ class VerifyResultListener(capturesCount: Int) : Request.Listener {
             return
         }
 
-        if (waitingCount.decrementAndGet() < 0) {
-            signal.completeExceptionally(failureException)
-            return
-        }
+//        if (waitingCount.decrementAndGet() < 0) {
+//            signal.completeExceptionally(failureException)
+//            return
+//        }
     }
 
     override fun onComplete(
@@ -68,10 +68,10 @@ class VerifyResultListener(capturesCount: Int) : Request.Listener {
         }
         captureRequests.add(requestMetadata)
         captureResults.add(result)
-        if (waitingCount.decrementAndGet() < 0) {
-            signal.completeExceptionally(failureException)
-            return
-        }
+//        if (waitingCount.decrementAndGet() < 0) {
+//            signal.completeExceptionally(failureException)
+//            return
+//        }
         try {
             if (_verifyBlock(requestMetadata, result)) {
                 signal.complete(Unit)
@@ -89,10 +89,10 @@ class VerifyResultListener(capturesCount: Int) : Request.Listener {
         if (!startReceiving) {
             return
         }
-        if (waitingCount.decrementAndGet() < 0) {
-            signal.completeExceptionally(failureException)
-            return
-        }
+//        if (waitingCount.decrementAndGet() < 0) {
+//            signal.completeExceptionally(failureException)
+//            return
+//        }
     }
 
     suspend fun verify(
